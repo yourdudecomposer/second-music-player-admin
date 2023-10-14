@@ -1,0 +1,39 @@
+
+
+table{
+    border-collapse: collapse;
+    table-layout: fixed;
+    width: 100%;
+}
+
+
+
+thead{
+    background-color: #aaa;
+}
+
+th div{
+        overflow: hidden;
+        text-overflow: ellipsis
+}
+
+td{
+        overflow: hidden;
+        text-overflow: ellipsis
+}
+
+tbody td{
+    padding: 10px;
+}
+
+tbody tr:nth-child(odd) {
+    background-color: #d6d6d6;
+}
+
+
+
+
+tbody tr:nth-child(even) {
+    background-color: #aaa;
+}
+

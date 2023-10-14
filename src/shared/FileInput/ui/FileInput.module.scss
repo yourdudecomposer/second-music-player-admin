@@ -1,0 +1,21 @@
+.input[type="file"] {
+    display: block;
+    font-style: oblique;
+    width: 100%;
+
+    &:focus{
+      outline: none;
+  }
+
+    &::file-selector-button {
+      display: none;
+  }
+
+}
+
+
+.button{
+  padding: 5px;
+  width: 100%;
+}
+

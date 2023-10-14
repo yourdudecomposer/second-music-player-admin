@@ -1,0 +1,7 @@
+.input{
+    padding: 5px 10px;
+    &::placeholder{
+       text-align: left;
+       opacity: .5;
+    }
+}

@@ -1,0 +1,16 @@
+.overlay{
+    background-color: rgba($color: #000, $alpha: 50%);
+    position: fixed;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.panel{
+    width: 50%;
+    max-width: 400px;
+    background:transparent;
+}
