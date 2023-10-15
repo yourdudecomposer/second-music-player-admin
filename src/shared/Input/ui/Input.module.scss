@@ -1,7 +1,9 @@
 .input{
     padding: 5px 10px;
+    border-radius: 5px;
+
     &::placeholder{
-       text-align: left;
-       opacity: .5;
+        text-align: left;
+        opacity: .5;
     }
 }

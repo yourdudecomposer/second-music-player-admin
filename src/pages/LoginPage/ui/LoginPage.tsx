@@ -1,5 +1,7 @@
+import { LoginModal } from '@/features/Auth';
+
 export function LoginPage() {
   return (
-    <p>Login Page</p>
+    <LoginModal />
   );
 }

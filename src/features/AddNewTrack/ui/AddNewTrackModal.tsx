@@ -12,6 +12,7 @@ interface AddNewTrackModalProps {
 
 export function AddNewTrackModal({ setIsOpenModal, isOpenModal }: AddNewTrackModalProps) {
   function handleSubmit(e:FormEvent<HTMLFormElement>) {
+    console.log(123);
     e.preventDefault();
     console.log(((e.target as HTMLFormElement)[0] as HTMLInputElement).value);
   }
@@ -21,14 +22,15 @@ export function AddNewTrackModal({ setIsOpenModal, isOpenModal }: AddNewTrackMod
       setIsOpenModal={setIsOpenModal}
     >
       <div className={cls.modal}>
-        <h3>Add Track</h3>
-        <form className={cls.form} onSubmit={handleSubmit} action="">
 
+        <form className={cls.form} onSubmit={handleSubmit} action="">
+          <h3>Add Track</h3>
           <Input required placeholder="title" className={cls.input} />
+
           <Input placeholder="description" className={cls.input} />
           <FileInput accept=".mp3" required className={cls.fileInput} label="Add Audio" />
           <FileInput accept=".png,.jpg" required className={cls.fileInput} label="Add Cover" />
-          <Button className={cls.button} type="submit">add</Button>
+          <Button className={cls.button} type="submit">Add</Button>
         </form>
       </div>
     </ModalWrapper>

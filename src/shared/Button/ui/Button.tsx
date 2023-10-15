@@ -5,9 +5,11 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     children:ReactNode
     onClick?:()=>void
     className?:string
+    isLoading?:boolean
 }
 
 export function Button({
+  isLoading = false,
   children,
   onClick = () => {},
   type = 'button',
@@ -15,6 +17,7 @@ export function Button({
 }:ButtonProps) {
   return (
     <button
+      disabled={isLoading}
       /* eslint-disable react/button-has-type */
       type={type}
       /* eslint-enable react/button-has-type */

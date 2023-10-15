@@ -1,6 +1,7 @@
 import {
+  ChangeEvent,
   InputHTMLAttributes,
-  useEffect, useRef,
+  useEffect, useRef, useState,
 } from 'react';
 import cls from './FileInput.module.scss';
 
@@ -16,6 +17,7 @@ export function FileInput({
 }: FileInputProps) {
   const refBtn = useRef<HTMLButtonElement>(null);
   const refInp = useRef<HTMLInputElement>(null);
+  const [error, setError] = useState(cls.error);
   const clickHandler = () => {
     refInp.current?.click();
   };
@@ -26,11 +28,26 @@ export function FileInput({
       ref?.removeEventListener('click', clickHandler);
     };
   }, []);
-  return (
-    <div className={`${className} ${cls.wrapper}`}>
-      <button className={cls.button} ref={refBtn} type="button">{label}</button>
-      <input accept={accept} required={required} className={cls.input} ref={refInp} type="file" />
 
+  const handleChange = (e:ChangeEvent<HTMLInputElement>) => {
+    if (e.target.value) {
+      setError('');
+    } else {
+      setError(cls.error);
+    }
+  };
+
+  return (
+    <div className={`${className} ${cls.wrapper} ${error}`}>
+      <button className={cls.button} ref={refBtn} type="button">{label}</button>
+      <input
+        onChange={handleChange}
+        accept={accept}
+        required={required}
+        className={`${cls.input} ${error}`}
+        ref={refInp}
+        type="file"
+      />
     </div>
   );
 }
