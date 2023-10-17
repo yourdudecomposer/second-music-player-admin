@@ -13,7 +13,7 @@ interface FileInputProps extends InputHTMLAttributes<HTMLInputElement>{
 }
 
 export function FileInput({
-  className, label, required, accept,
+  className, label, required, accept, name,
 }: FileInputProps) {
   const refBtn = useRef<HTMLButtonElement>(null);
   const refInp = useRef<HTMLInputElement>(null);
@@ -41,6 +41,7 @@ export function FileInput({
     <div className={`${className} ${cls.wrapper} ${error}`}>
       <button className={cls.button} ref={refBtn} type="button">{label}</button>
       <input
+        name={name}
         onChange={handleChange}
         accept={accept}
         required={required}

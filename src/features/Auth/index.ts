@@ -1,2 +1,2 @@
 export { LoginModal } from './ui/LoginModal';
-export { isLogged } from './model/slice/AuthSlice';
+export { isLogged, isLogErr } from './model/slice/AuthSlice';

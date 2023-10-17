@@ -1,5 +1,5 @@
 import { ModalWrapper } from '@/shared/ModalWrapper';
-import React, { useEffect, useState } from 'react';
+import React, { FormEvent, useState } from 'react';
 import { Input } from '@/shared/Input';
 import { Button } from '@/shared/Button';
 import { useNavigate } from 'react-router-dom';
@@ -14,39 +14,38 @@ interface LoginModalProps {
 }
 
 export function LoginModal({ setIsOpenModal = () => {}, isOpenModal = true }: LoginModalProps) {
-  const [login, { isLoading }] = useAdminMutation();
+  const [login, { isLoading, isError }] = useAdminMutation();
   const dispatch = useDispatch();
-  console.log(isLoading);
 
   const navigate = useNavigate();
+  const [errorTxt, setErrorTxt] = useState('');
   const [formState, setFormState] = useState<LoginRequest>({
     password: '',
   });
-  useEffect(() => { console.log(formState); }, [formState]);
   const handleChange = ({
     target: { name, value },
   }: React.ChangeEvent<HTMLInputElement>) => setFormState((prev) => ({ ...prev, [name]: value }));
 
-  // function handleSubmit(e:FormEvent<HTMLFormElement>) {
-  //   console.log(123);
-  //   e.preventDefault();
-  //   console.log(((e.target as HTMLFormElement)[0] as HTMLInputElement).value);
-  // }
-
-  const handleClick = async () => {
+  const handleSubmit = async (e:FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     try {
       const token = await login(formState).unwrap();
       localStorage.setItem('token', token.token);
       dispatch(setIsLogged(true));
       navigate('/table');
-    } catch (err) {
+    } catch (err:unknown) {
+      if (err.status === 'FETCH_ERROR') {
+        setErrorTxt('something go wrong');
+      } else {
+        setErrorTxt('try again');
+      }
       console.log(err);
     }
   };
   return (
     <ModalWrapper isOpenModal={isOpenModal} setIsOpenModal={setIsOpenModal}>
 
-      <div className={cls.modal}>
+      <form className={cls.modal} onSubmit={handleSubmit}>
 
         <Input
           name="password"
@@ -55,17 +54,16 @@ export function LoginModal({ setIsOpenModal = () => {}, isOpenModal = true }: Lo
           placeholder="parol"
           className={cls.input}
         />
+        {isError && <p className={cls.error}>{errorTxt}</p> }
         <Button
           isLoading={isLoading}
-          onClick={handleClick}
           className={cls.button}
           type="submit"
         >
-          Add
-
+          Login
         </Button>
 
-      </div>
+      </form>
     </ModalWrapper>
 
   );

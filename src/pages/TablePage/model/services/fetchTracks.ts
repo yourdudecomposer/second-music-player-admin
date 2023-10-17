@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import type { Tracks } from '../types/articlesPageSchema';
+import type { Track } from '../types/TrackSchema';
 
 // Define a service using a base URL and expected endpoints
 export const tracksApi = createApi({
@@ -8,8 +8,6 @@ export const tracksApi = createApi({
     baseUrl: 'http://localhost:3000/tracks',
     prepareHeaders: (headers) => {
       const token = localStorage.getItem('token');
-      console.log(token);
-
       if (token) {
         headers.set('authorization', `Bearer ${token}`);
       }
@@ -17,7 +15,7 @@ export const tracksApi = createApi({
     },
   }),
   endpoints: (builder) => ({
-    getAllTracks: builder.query<Tracks, string>({
+    getAllTracks: builder.query<Track[], string>({
       query: () => 'all',
     }),
   }),

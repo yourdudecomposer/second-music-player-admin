@@ -6,27 +6,14 @@ import {
 } from '@tanstack/react-table';
 import { Table } from '@/widgets/Table';
 import { AddNewTrackButton, AddNewTrackModal } from '@/features/AddNewTrack';
-import { isLogged } from '@/features/Auth';
-import { useSelector } from 'react-redux';
-import { redirect } from 'react-router-dom';
 import cls from './TablePage.module.scss';
 import { tracks } from './mockData';
 import { useGetAllTracksQuery } from '../model/services/fetchTracks';
-
-export type Track = {
-    id:number,
-    title: string;
-    description: string;
-    audio: string;
-    cover: string;
-    isActive: boolean;
-  }
+import { Track } from '../model/types/TrackSchema';
 
 export function TablePage() {
   const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
   const { data, error, isLoading } = useGetAllTracksQuery('');
-
-  console.log(data, error, isLoading);
   const columns = useMemo<ColumnDef<Track>[]>(
     () => {
       const arr = [
@@ -57,14 +44,21 @@ export function TablePage() {
     [],
   );
 
+  if (isLoading) {
+    return <p>loading...</p>;
+  }
+  if (error) {
+    console.log(error);
+    return <p>some error</p>;
+  }
+
   return (
     <>
 
       <Table
-        {...{
-          tracks,
-          columns,
-        }}
+        tracks={data}
+        columns={columns}
+
       />
       <AddNewTrackButton onClick={() => setIsOpenModal(true)} className={cls.addButton} />
       <AddNewTrackModal setIsOpenModal={setIsOpenModal} isOpenModal={isOpenModal} />

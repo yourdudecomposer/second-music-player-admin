@@ -8,3 +8,12 @@
     align-items: center;
     gap: 10px;
 }
+
+.input{
+    width: 100%;
+}
+
+.error{
+    transition-duration:1s;
+    color: red;
+}

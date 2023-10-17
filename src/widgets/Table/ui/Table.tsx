@@ -1,6 +1,5 @@
 import { Filter } from '@/features/Filter';
 import { Pagination } from '@/features/Pagination';
-import { Track } from '@/pages/TablePage/ui/TablePage';
 import {
   useReactTable,
   getCoreRowModel,
@@ -18,13 +17,14 @@ import DeleteIcon from '@shared/assets/delete.svg?react';
 import React, { useState } from 'react';
 import { IconButton } from '@/shared/IconButton';
 import { EditModal } from '@/features/Edit';
+import { Track } from '@/pages/TablePage/model/types/TrackSchema';
 import cls from './table.module.scss';
 
 export function Table({
   tracks,
   columns,
 }: {
-      tracks: Track[]
+      tracks: Track[] | undefined
       columns: ColumnDef<Track>[]
     }) {
   const [isOpenDeleteModal, setIsOpenDeleteModal] = useState<boolean>(false);
@@ -32,7 +32,7 @@ export function Table({
   const [currentTrackId, setCurrentTrackId] = useState<string>('');
 
   const table = useReactTable({
-    data: tracks,
+    data: tracks || [],
     columns,
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
