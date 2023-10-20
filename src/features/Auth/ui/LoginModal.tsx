@@ -1,7 +1,7 @@
-import { ModalWrapper } from '@/shared/ModalWrapper';
+import { ModalWrapper } from '@/shared/ui/ModalWrapper';
 import React, { FormEvent, useState } from 'react';
-import { Input } from '@/shared/Input';
-import { Button } from '@/shared/Button';
+import { Input } from '@/shared/ui/Input';
+import { Button } from '@/shared/ui/Button';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import cls from './LoginModal.module.scss';
@@ -56,7 +56,7 @@ export function LoginModal({ setIsOpenModal = () => {}, isOpenModal = true }: Lo
         />
         {isError && <p className={cls.error}>{errorTxt}</p> }
         <Button
-          isLoading={isLoading}
+          disabled={isLoading}
           className={cls.button}
           type="submit"
         >

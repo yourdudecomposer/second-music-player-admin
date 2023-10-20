@@ -1,15 +1,16 @@
 import { ReactNode, ButtonHTMLAttributes } from 'react';
+import { Spinner } from '@/shared/ui/Spinner';
 import cls from './Button.module.scss';
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     children:ReactNode
     onClick?:()=>void
     className?:string
-    isLoading?:boolean
+    disabled?:boolean
 }
 
 export function Button({
-  isLoading = false,
+  disabled = false,
   children,
   onClick = () => {},
   type = 'button',
@@ -17,14 +18,14 @@ export function Button({
 }:ButtonProps) {
   return (
     <button
-      disabled={isLoading}
+      disabled={disabled}
       /* eslint-disable react/button-has-type */
       type={type}
       /* eslint-enable react/button-has-type */
-      className={`${cls.button} ${className}`}
+      className={`${cls.button} ${className} ${disabled ? cls.disabled : ''}`}
       onClick={onClick}
     >
-      {children}
+      {disabled ? <Spinner /> : children}
 
     </button>
   );

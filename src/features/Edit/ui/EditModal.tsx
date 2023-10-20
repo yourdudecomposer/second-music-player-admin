@@ -1,6 +1,6 @@
 import React from 'react';
-import { ModalWrapper } from '@/shared/ModalWrapper/ui/ModalWrapper';
-import { Button } from '@/shared/Button';
+import { ModalWrapper } from '@/shared/ui/ModalWrapper/ui/ModalWrapper';
+import { Button } from '@/shared/ui/Button';
 import cls from './EditModal.module.scss';
 
 interface EditModalProps{

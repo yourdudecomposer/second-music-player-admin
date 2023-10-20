@@ -15,7 +15,7 @@ import EditIcon from '@shared/assets/edit.svg?react';
 import DeleteIcon from '@shared/assets/delete.svg?react';
 
 import React, { useState } from 'react';
-import { IconButton } from '@/shared/IconButton';
+import { IconButton } from '@/shared/ui/IconButton';
 import { EditModal } from '@/features/Edit';
 import { Track } from '@/pages/TablePage/model/types/TrackSchema';
 import cls from './table.module.scss';
@@ -23,6 +23,7 @@ import cls from './table.module.scss';
 export function Table({
   tracks,
   columns,
+
 }: {
       tracks: Track[] | undefined
       columns: ColumnDef<Track>[]
@@ -81,17 +82,19 @@ export function Table({
         if (cell.column.id === 'actions') {
           return (
             <td
-              className={cls.actions}
               key={cell.id}
             >
-              <IconButton width="25" data={String(cell.row.original.id)} Icon={EditIcon} type="edit" />
-              <IconButton width="25" data={String(cell.row.original.id)} Icon={DeleteIcon} type="delete" />
+              <div className={cls.actions}>
+
+                <IconButton width="25" data={String(cell.row.original.id)} Icon={EditIcon} type="edit" />
+                <IconButton width="25" data={String(cell.row.original.id)} Icon={DeleteIcon} type="delete" />
+              </div>
 
             </td>
           );
         }
         return (
-          <td style={{ textAlign: 'center' }} key={cell.id}>
+          <td style={{ textAlign: 'center', overflow: 'scroll' }} key={cell.id}>
             {flexRender(
               cell.column.columnDef.cell,
               cell.getContext(),

@@ -6,6 +6,7 @@ import {
 } from '@tanstack/react-table';
 import { Table } from '@/widgets/Table';
 import { AddNewTrackButton, AddNewTrackModal } from '@/features/AddNewTrack';
+import { Spinner } from '@/shared/ui/Spinner';
 import cls from './TablePage.module.scss';
 import { tracks } from './mockData';
 import { useGetAllTracksQuery } from '../model/services/fetchTracks';
@@ -13,7 +14,11 @@ import { Track } from '../model/types/TrackSchema';
 
 export function TablePage() {
   const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
-  const { data, error, isLoading } = useGetAllTracksQuery('');
+
+  const {
+    data, error, isLoading, refetch,
+  } = useGetAllTracksQuery('');
+
   const columns = useMemo<ColumnDef<Track>[]>(
     () => {
       const arr = [
@@ -45,11 +50,22 @@ export function TablePage() {
   );
 
   if (isLoading) {
-    return <p>loading...</p>;
+    return (
+      <div
+        className={cls.loading}
+      >
+        <Spinner color="red" bigger />
+      </div>
+    );
   }
   if (error) {
     console.log(error);
-    return <p>some error</p>;
+    return (
+      <div>
+        <p>some error</p>
+        <pre>{JSON.stringify(error, null, 2)}</pre>
+      </div>
+    );
   }
 
   return (
@@ -61,7 +77,7 @@ export function TablePage() {
 
       />
       <AddNewTrackButton onClick={() => setIsOpenModal(true)} className={cls.addButton} />
-      <AddNewTrackModal setIsOpenModal={setIsOpenModal} isOpenModal={isOpenModal} />
+      <AddNewTrackModal refetch={refetch} setIsOpenModal={setIsOpenModal} isOpenModal={isOpenModal} />
     </>
 
   );

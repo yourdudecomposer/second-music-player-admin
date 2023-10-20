@@ -1,25 +1,39 @@
-import { Input } from '@/shared/Input';
-import { ModalWrapper } from '@/shared/ModalWrapper';
+import { Input } from '@/shared/ui/Input';
+import { ModalWrapper } from '@/shared/ui/ModalWrapper';
 import React, { FormEvent, useState } from 'react';
-import { Button } from '@/shared/Button';
-import { FileInput } from '@/shared/FileInput';
-import { Checkbox } from '@/shared/Checkbox';
+import { Button } from '@/shared/ui/Button';
+import { FileInput } from '@/shared/ui/FileInput';
+import { Checkbox } from '@/shared/ui/Checkbox';
 import cls from './AddNewTrackModal.module.scss';
+import { createTrack } from '../model/service/AddNewTrackService';
 
 interface AddNewTrackModalProps {
   setIsOpenModal: React.Dispatch<React.SetStateAction<boolean>>
+  refetch: ()=>void
   isOpenModal:boolean
 }
 
-export function AddNewTrackModal({ setIsOpenModal, isOpenModal }: AddNewTrackModalProps) {
+export function AddNewTrackModal({ setIsOpenModal, isOpenModal, refetch }: AddNewTrackModalProps) {
   const [isActive, setIsActive] = useState<boolean>(false);
-  function handleSubmit(e:FormEvent<HTMLFormElement>) {
+  const [isBtnDisabled, setIsBtnDisabled] = useState<boolean>(false);
+
+  async function handleSubmit(e:FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    // const submitter = document.querySelector('button[value=save]');
     const form = new FormData(e.currentTarget);
-    const data = { ...Object.fromEntries(form), ...{ isActive } };
-    console.log(data);
+    form.append('isActive', String(isActive));
+    setIsBtnDisabled(true);
+    createTrack(form)
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => console.log(err))
+      .finally(() => {
+        setIsBtnDisabled(false);
+        refetch();
+        setIsOpenModal(false);
+      });
   }
+
   return (
     <ModalWrapper
       isOpenModal={isOpenModal}
@@ -36,7 +50,7 @@ export function AddNewTrackModal({ setIsOpenModal, isOpenModal }: AddNewTrackMod
           <FileInput name="cover" accept=".png,.jpg" required className={cls.fileInput} label="Add Cover" />
           {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
           <Checkbox onChange={() => setIsActive(!isActive)} label="isActive" />
-          <Button className={cls.button} type="submit">Add</Button>
+          <Button disabled={isBtnDisabled} className={cls.button} type="submit">Add</Button>
         </form>
       </div>
     </ModalWrapper>

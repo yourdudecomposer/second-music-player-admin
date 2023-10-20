@@ -1,5 +1,5 @@
 import { Column, Table } from '@tanstack/react-table';
-import { Input } from '@/shared/Input';
+import { Input } from '@/shared/ui/Input';
 import cls from './Filter.module.scss';
 
 export function Filter({
