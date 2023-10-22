@@ -9,6 +9,7 @@ export interface LoginRequest {
 }
 
 export const authApi = createApi({
+  reducerPath: 'authApi',
   baseQuery: fetchBaseQuery({
     baseUrl: 'http://localhost:3000/',
   }),

@@ -1,6 +1,7 @@
 import React from 'react';
 import { ModalWrapper } from '@/shared/ui/ModalWrapper/ui/ModalWrapper';
 import { Button } from '@/shared/ui/Button';
+import { useDeleteTrackMutation, useGetAllTracksQuery } from '@/entities/Track';
 import cls from './DeleteModal.module.scss';
 
 interface DeleteModalProps{
@@ -9,6 +10,17 @@ interface DeleteModalProps{
     currentTrackId:string
 }
 export function DeleteModal({ isOpenDeleteModal, setIsOpenDeleteModal, currentTrackId }:DeleteModalProps) {
+  const [deleteTrack, { isLoading, isError }] = useDeleteTrackMutation();
+
+  const {
+    refetch,
+  } = useGetAllTracksQuery('');
+  const HandleClick = () => {
+    console.log(currentTrackId);
+    deleteTrack(currentTrackId);
+    refetch();
+    setIsOpenDeleteModal(false);
+  };
   return (
     <ModalWrapper
       isOpenModal={isOpenDeleteModal}
@@ -18,10 +30,10 @@ export function DeleteModal({ isOpenDeleteModal, setIsOpenDeleteModal, currentTr
 
         <h3>Delete Track</h3>
         <p>
-          {`Are you shure you whant delete track ${currentTrackId}?`}
+          {`Are you shure you want delete track ${currentTrackId}?`}
         </p>
         <div className={cls.buttons}>
-          <Button onClick={() => setIsOpenDeleteModal(false)}>Delete</Button>
+          <Button className={cls.button} onClick={HandleClick}>Delete</Button>
           <Button onClick={() => setIsOpenDeleteModal(false)}>Cancel</Button>
         </div>
       </div>

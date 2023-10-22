@@ -23,7 +23,6 @@ import cls from './table.module.scss';
 export function Table({
   tracks,
   columns,
-
 }: {
       tracks: Track[] | undefined
       columns: ColumnDef<Track>[]
@@ -31,7 +30,6 @@ export function Table({
   const [isOpenDeleteModal, setIsOpenDeleteModal] = useState<boolean>(false);
   const [isOpenEditModal, setIsOpenEditModal] = useState<boolean>(false);
   const [currentTrackId, setCurrentTrackId] = useState<string>('');
-
   const table = useReactTable({
     data: tracks || [],
     columns,

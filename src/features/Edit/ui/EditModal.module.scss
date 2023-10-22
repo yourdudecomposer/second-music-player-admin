@@ -1,6 +1,6 @@
 .modal{
     background-color: white;
-    padding: 10px;
+    padding: 20px;
     border-radius: 8px;
     display: flex;
     flex-direction: column;
@@ -8,9 +8,22 @@
     gap: 10px;
 }
 
-.buttons{
-    width: 100%;
+.form{
     display: flex;
+    flex-direction: column;
     gap: 10px;
+    width: 100%;
 }
 
+.input{
+    width: 100%;
+    border: solid red;
+
+    &:valid{
+        border: solid grey;
+    }
+}
+
+.fileInput{
+    width: 100%;
+}

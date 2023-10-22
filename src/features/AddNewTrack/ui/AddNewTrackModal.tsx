@@ -4,8 +4,8 @@ import React, { FormEvent, useState } from 'react';
 import { Button } from '@/shared/ui/Button';
 import { FileInput } from '@/shared/ui/FileInput';
 import { Checkbox } from '@/shared/ui/Checkbox';
+import { createTrack } from '@/entities/Track';
 import cls from './AddNewTrackModal.module.scss';
-import { createTrack } from '../model/service/AddNewTrackService';
 
 interface AddNewTrackModalProps {
   setIsOpenModal: React.Dispatch<React.SetStateAction<boolean>>
