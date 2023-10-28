@@ -2,7 +2,7 @@ import './Spinner.css';
 
 type Colors = 'red'|'green'|'blue'|'grey'
 interface SpinnerProps {
-  color:Colors
+  color?:Colors
   bigger?:boolean
 }
 

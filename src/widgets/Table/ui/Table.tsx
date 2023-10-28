@@ -6,7 +6,6 @@ import {
   getFilteredRowModel,
   getPaginationRowModel,
   flexRender,
-  ColumnDef,
 
 } from '@tanstack/react-table';
 import './table.scss';
@@ -17,15 +16,14 @@ import DeleteIcon from '@shared/assets/delete.svg?react';
 import React, { useState } from 'react';
 import { IconButton } from '@/shared/ui/IconButton';
 import { EditModal } from '@/features/Edit';
-import { Track } from '@/pages/TablePage/model/types/TrackSchema';
+import { Track } from '@/entities/Track/types/types';
 import cls from './table.module.scss';
+import { columns } from '../constants/constants';
 
 export function Table({
   tracks,
-  columns,
 }: {
       tracks: Track[] | undefined
-      columns: ColumnDef<Track>[]
     }) {
   const [isOpenDeleteModal, setIsOpenDeleteModal] = useState<boolean>(false);
   const [isOpenEditModal, setIsOpenEditModal] = useState<boolean>(false);
@@ -74,34 +72,70 @@ export function Table({
     </th>
   ));
 
-  const tableBody = table.getRowModel().rows.map((row) => (
-    <tr key={row.id}>
-      {row.getVisibleCells().map((cell) => {
-        if (cell.column.id === 'actions') {
+  const tableBody = table.getRowModel().rows
+    .map((row) => (
+      <tr className={cls.row} key={row.id}>
+        {row.getVisibleCells().map((cell) => {
+          if (cell.column.id === 'createdAt') {
+            const d = new Date(cell.row.original.createdAt);
+            const yyyy = d.getFullYear();
+            let mm: string | number = d.getMonth() + 1; // Months start at 0!
+            let dd: string | number = d.getDate();
+
+            if (dd < 10) dd = `0${dd}`;
+            if (mm < 10) mm = `0${mm}`;
+
+            const formattedToday = `${dd}/${mm}/${yyyy}`;
+            return (
+              <td key={cell.id}>
+                {formattedToday}
+              </td>
+            );
+          }
+          if (cell.column.id === 'audio') {
+            return (
+              <td
+                key={cell.id}
+              >
+                <audio controls src={`http://localhost:3000/${cell.row.original.audio}`} />
+
+              </td>
+            );
+          }
+          if (cell.column.id === 'cover') {
+            return (
+              <td key={cell.id}>
+                <img src={`http://localhost:3000/${cell.row.original.cover}`} alt="" />
+
+              </td>
+            );
+          }
+          if (cell.column.id === 'actions') {
+            return (
+              <td
+
+                key={cell.id}
+              >
+                <div className={cls.actions}>
+
+                  <IconButton width="25" data={String(cell.row.original.id)} Icon={EditIcon} type="edit" />
+                  <IconButton width="25" data={String(cell.row.original.id)} Icon={DeleteIcon} type="delete" />
+                </div>
+
+              </td>
+            );
+          }
           return (
-            <td
-              key={cell.id}
-            >
-              <div className={cls.actions}>
-
-                <IconButton width="25" data={String(cell.row.original.id)} Icon={EditIcon} type="edit" />
-                <IconButton width="25" data={String(cell.row.original.id)} Icon={DeleteIcon} type="delete" />
-              </div>
-
+            <td key={cell.id}>
+              {flexRender(
+                cell.column.columnDef.cell,
+                cell.getContext(),
+              )}
             </td>
           );
-        }
-        return (
-          <td style={{ textAlign: 'center', overflow: 'scroll' }} key={cell.id}>
-            {flexRender(
-              cell.column.columnDef.cell,
-              cell.getContext(),
-            )}
-          </td>
-        );
-      })}
-    </tr>
-  ));
+        })}
+      </tr>
+    ));
 
   return (
     <div className="p-2">

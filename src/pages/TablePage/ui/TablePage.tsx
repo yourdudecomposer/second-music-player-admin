@@ -1,16 +1,12 @@
 import { useEffect, useMemo, useState } from 'react';
 // import './index.css';
 
-import {
-  ColumnDef,
-} from '@tanstack/react-table';
 import { Table } from '@/widgets/Table';
 import { AddNewTrackButton, AddNewTrackModal } from '@/features/AddNewTrack';
 import { Spinner } from '@/shared/ui/Spinner';
 import { useGetAllTracksQuery } from '@/entities/Track';
 import { useNavigate } from 'react-router-dom';
 import cls from './TablePage.module.scss';
-import { Track } from '../model/types/TrackSchema';
 
 export function TablePage() {
   const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
@@ -20,43 +16,21 @@ export function TablePage() {
     data, error, isLoading, refetch,
   } = useGetAllTracksQuery('');
 
+  const sortedData = useMemo(() => data
+    ?.slice(0)
+    .sort(
+      (a, b) => Number(new Date(a.createdAt)) - Number(new Date(b.createdAt)),
+    ), [data]);
+
   useEffect(() => {
     if (error) {
-      if ('status' in error && error.status === 401) {
+      if ('status' in error && error.status === 401 && localStorage.getItem('token')) {
+        localStorage.clear();
         navigate('/');
+        navigate(0);
       }
     }
   }, [error]);
-  const columns = useMemo<ColumnDef<Track>[]>(
-    () => {
-      const arr = [
-        {
-          accessorKey: 'title',
-          header: 'title',
-        },
-        {
-          accessorKey: 'description',
-          header: 'description',
-        },
-      ];
-      const nonIncludedFields = ['title', 'description', 'id'];
-
-      return data?.length ? arr.concat(Object.keys(data[0])
-        .filter((key) => !nonIncludedFields.includes(key))
-        .map((key) => ({
-          accessorKey: key,
-          header: key,
-
-        })))
-        .concat([
-          {
-            accessorKey: 'actions',
-            header: 'actions',
-          },
-        ]) : [];
-    },
-    [data],
-  );
 
   if (isLoading) {
     return (
@@ -79,9 +53,7 @@ export function TablePage() {
     <>
 
       <Table
-        tracks={data || []}
-        columns={columns}
-
+        tracks={sortedData}
       />
       <AddNewTrackButton onClick={() => setIsOpenModal(true)} className={cls.addButton} />
       <AddNewTrackModal refetch={refetch} setIsOpenModal={setIsOpenModal} isOpenModal={isOpenModal} />

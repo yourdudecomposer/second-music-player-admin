@@ -2,7 +2,8 @@
 
 table{
     border-collapse: collapse;
-    table-layout: fixed;
+
+    // table-layout: fixed;
     width: 100%;
 }
 
@@ -18,16 +19,39 @@ th div{
 }
 
 td{
-    overflow: hidden;
-    text-overflow: ellipsis
+    overflow: auto;
+    text-overflow: ellipsis;
+    text-align: center;
+    max-width: 200px;
+}
+
+td:has(audio) {
+    max-width: 500px;
 }
 
 tbody td{
     padding: 10px;
+
 }
+
+tbody td:has(img) {
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+td img {
+    width: 120px;
+    height: 120px;
+
+}
+
+
 
 tbody tr:nth-child(odd) {
     background-color: #d6d6d6;
+    
 }
 
 

@@ -10,16 +10,18 @@ interface DeleteModalProps{
     currentTrackId:string
 }
 export function DeleteModal({ isOpenDeleteModal, setIsOpenDeleteModal, currentTrackId }:DeleteModalProps) {
-  const [deleteTrack, { isLoading, isError }] = useDeleteTrackMutation();
+  const [deleteTrack, { isLoading: isDeletingProcess }] = useDeleteTrackMutation();
 
   const {
-    refetch,
+    isLoading: isTableLoading, refetch,
   } = useGetAllTracksQuery('');
+
   const HandleClick = () => {
-    console.log(currentTrackId);
-    deleteTrack(currentTrackId);
-    refetch();
-    setIsOpenDeleteModal(false);
+    deleteTrack(currentTrackId)
+      .then(refetch)
+      .then(() => {
+        setIsOpenDeleteModal(false);
+      });
   };
   return (
     <ModalWrapper
@@ -33,7 +35,7 @@ export function DeleteModal({ isOpenDeleteModal, setIsOpenDeleteModal, currentTr
           {`Are you shure you want delete track ${currentTrackId}?`}
         </p>
         <div className={cls.buttons}>
-          <Button className={cls.button} onClick={HandleClick}>Delete</Button>
+          <Button disabled={isDeletingProcess || isTableLoading} className={cls.button} onClick={HandleClick}>Delete</Button>
           <Button onClick={() => setIsOpenDeleteModal(false)}>Cancel</Button>
         </div>
       </div>

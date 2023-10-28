@@ -1,19 +1,7 @@
-import { Track } from '@/pages/TablePage/model/types/TrackSchema';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { Track } from '../types/types';
 
-// export interface Post {
-//   id: string
-//   name: string
-// }
-
-// type PostsResponse = Post[]
-
-const formDataObj = {};
 export const createTrack = async (form:FormData) => {
-  form.forEach((value, key) => (formDataObj[key] = value));
-
-  console.log(formDataObj);
-
   const res = await fetch('http://localhost:3000/tracks', {
     method: 'post',
     body: form,
@@ -24,10 +12,6 @@ export const createTrack = async (form:FormData) => {
   console.log(res);
 };
 export const editTrack = async (id:string, form:FormData) => {
-  form.forEach((value, key) => (formDataObj[key] = value));
-
-  console.log(formDataObj);
-
   const res = await fetch(`http://localhost:3000/tracks/${id}`, {
     method: 'put',
     body: form,
@@ -46,6 +30,9 @@ export const tracksApi = createApi({
       const token = localStorage.getItem('token');
       if (token) {
         headers.set('authorization', `Bearer ${token}`);
+        console.log('yes token');
+      } else {
+        console.log('no token');
       }
       return headers;
     },
@@ -54,7 +41,7 @@ export const tracksApi = createApi({
     getAllTracks: build.query<Track[], string>({
       query: () => 'tracks/all?count=1000',
     }),
-    deleteTrack: build.mutation<any, any>({
+    deleteTrack: build.mutation<Track[], string>({
       query: (id) => ({
         url: `tracks/${id}`,
         method: 'DELETE',

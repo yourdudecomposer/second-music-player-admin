@@ -1,5 +1,6 @@
-export interface Track {
-    id:number
-    title:string;
-    description:string
+import { TrackFields } from '@/entities/Track/types/types';
+
+export interface Column {
+    accessorKey: TrackFields | 'actions',
+    header: TrackFields | 'actions'
 }

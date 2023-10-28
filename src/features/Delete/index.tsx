@@ -1,1 +1,1 @@
-export { Delete } from './ui/DeleteButton';
+export { DeleteModal } from './ui/DeleteModal';
